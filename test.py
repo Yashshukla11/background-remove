@@ -27,6 +27,6 @@ def process_images(input_folders, output_folder):
 
             print(f"Processed {filename} from {input_folder}")
 
-input_folders = ['/Users/yashshukla/Desktop/images', '/Users/yashshukla/Desktop/img']
-output_folder = '/Users/yashshukla/Desktop/image'
+input_folders = ['path/to/your/input/folder1', 'path/to/your/input/folder2']
+output_folder = 'path/to/your/output/folder'
 process_images(input_folders, output_folder)
