@@ -2,31 +2,29 @@ import os
 from rembg import remove
 from PIL import Image
 
-def process_images(input_folders, output_folder):
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+def process_images(input_folder):
+    for filename in os.listdir(input_folder):
+        input_path = os.path.join(input_folder, filename)
 
-    for input_folder in input_folders:
-        if not os.path.exists(input_folder):
-            print(f"Warning: Input folder '{input_folder}' does not exist.")
+        # Only process files with valid image extensions
+        if not (filename.lower().endswith('.png') or filename.lower().endswith('.jpg') or filename.lower().endswith('.jpeg')):
             continue
 
-        for filename in os.listdir(input_folder):
-            input_path = os.path.join(input_folder, filename)
-            output_path = os.path.join(output_folder, filename)
+        with open(input_path, 'rb') as input_file:
+            input_data = input_file.read()
+            output_data = remove(input_data)
 
-            if not (filename.lower().endswith('.png') or filename.lower().endswith('.jpg') or filename.lower().endswith('.jpeg')):
-                continue
+            # Create the output filename
+            base, ext = os.path.splitext(filename)
+            output_filename = f"{base}_edited{ext}"
+            output_path = os.path.join(input_folder, output_filename)
 
-            with open(input_path, 'rb') as input_file:
-                input_data = input_file.read()
-                output_data = remove(input_data)
+            # Save the edited image
+            with open(output_path, 'wb') as output_file:
+                output_file.write(output_data)
 
-                with open(output_path, 'wb') as output_file:
-                    output_file.write(output_data)
+        print(f"Processed {filename}")
 
-            print(f"Processed {filename} from {input_folder}")
-
-input_folders = ['path/to/your/input/folder1', 'path/to/your/input/folder2']
-output_folder = 'path/to/your/output/folder'
-process_images(input_folders, output_folder)
+# Specify your input folder here
+input_folder = 'path/to/your/input/folder'
+process_images(input_folder)
