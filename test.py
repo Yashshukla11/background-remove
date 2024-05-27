@@ -27,8 +27,6 @@ def process_images(input_folders, output_folder):
 
             print(f"Processed {filename} from {input_folder}")
 
-# Paths to your input folders and output folder in Google Drive
-input_folders = ['/content/drive/My Drive/path/to/your/input/folder1', '/content/drive/My Drive/path/to/your/input/folder2']
-output_folder = '/content/drive/My Drive/path/to/your/output/folder'
-
+input_folders = ['path/to/your/input/folder1', 'path/to/your/input/folder2']
+output_folder = 'path/to/your/output/folder'
 process_images(input_folders, output_folder)
