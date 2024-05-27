@@ -2,29 +2,35 @@ import os
 from rembg import remove
 from PIL import Image
 
-def process_images(input_folder):
+def process_images(input_folder, output_folder):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
     for filename in os.listdir(input_folder):
         input_path = os.path.join(input_folder, filename)
+        output_path = os.path.join(output_folder, filename)
 
-        # Only process files with valid image extensions
+        # Check if the file is an image
         if not (filename.lower().endswith('.png') or filename.lower().endswith('.jpg') or filename.lower().endswith('.jpeg')):
             continue
 
-        with open(input_path, 'rb') as input_file:
-            input_data = input_file.read()
+        # Open the image
+        with Image.open(input_path) as input_image:
+            input_data = input_image.tobytes()
+
+            # Process the image to remove background
             output_data = remove(input_data)
 
-            # Create the output filename
-            base, ext = os.path.splitext(filename)
-            output_filename = f"{base}_edited{ext}"
-            output_path = os.path.join(input_folder, output_filename)
+            # Convert output data back to an image
+            output_image = Image.frombytes(input_image.mode, input_image.size, output_data)
 
-            # Save the edited image
-            with open(output_path, 'wb') as output_file:
-                output_file.write(output_data)
+            # Save the processed image
+            output_image.save(output_path)
 
         print(f"Processed {filename}")
 
-# Specify your input folder here
+# Specify your input and output folders
 input_folder = 'path/to/your/input/folder'
-process_images(input_folder)
+output_folder = 'path/to/your/output/folder'
+
+process_images(input_folder, output_folder)
